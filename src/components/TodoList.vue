@@ -23,7 +23,7 @@
   import BaseInputText from './BaseInputText.vue'
   import TodoListItem from './TodoListItem.vue'
 
-  let nextTodoId = 1
+  let nextTodoId = 1;
 
   export default {
     components: {
