@@ -1,10 +1,6 @@
 <template>
   <div>
-    <BaseInputText
-      v-model="newTodoText"
-      placeholder="New todo"
-      @keydown.enter="addTodo"
-    />
+    <TodoInput />
     <ul v-if="todos.length">
       <TodoListItem
         v-for="todo in todos"
@@ -20,43 +16,50 @@
 </template>
 
 <script>
-  import BaseInputText from './BaseInputText.vue'
   import TodoListItem from './TodoListItem.vue'
+  import TodoInput from './TodoInput.vue'
 
   let nextTodoId = 1;
 
   export default {
     components: {
-      BaseInputText, TodoListItem
+      TodoListItem,
+      TodoInput,
     },
     data () {
       return {
         newTodoText: '',
+        newTodoDescr: '',
         todos: [
           {
             id: nextTodoId++,
-            text: 'Learn Vue'
+            text: 'Learn Vue',
+            descr: 'First item description'
           },
           {
             id: nextTodoId++,
-            text: 'Learn about single-file components'
+            text: 'Learn about single-file components',
+            descr: 'Second item description'
           },
           {
             id: nextTodoId++,
-            text: 'Fall in love'
+            text: 'Fall in love',
+            descr: 'Third item description'
           }
         ]
       }
     },
     methods: {
       addTodo () {
-        const trimmedText = this.newTodoText.trim()
+        const trimmedText = this.newTodoText.trim();
         if (trimmedText) {
           this.todos.push({
             id: nextTodoId++,
-            text: trimmedText
-          })
-          this.newTodoText = ''
+            text: trimmedText,
+            descr: newTodoDescr,
+          });
+          this.newTodoText = '';
+          this.newTodoDescr = '';
         }
       },
       removeTodo (idToRemove) {

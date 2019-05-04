@@ -1,6 +1,7 @@
 <template>
-  <li>
-    {{ todo.text }}
+  <li class="todo-list__item">
+    {{ todo.text }}<br>
+    {{ todo.descr }}
     <button @click="$emit('remove', todo.id)">
       X
     </button>
@@ -17,3 +18,10 @@
     }
   }
 </script>
+
+<style>
+  .todo-list__item {
+    list-style: none;
+    padding: 0;
+  }
+</style>
