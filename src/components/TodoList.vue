@@ -1,7 +1,7 @@
 <template>
   <div>
-    <TodoInput />
-    <ul v-if="todos.length">
+    <AddTaskForm @addItem="addTodo" />
+    <ul v-if="todos.length" class="todo-list">
       <TodoListItem
         v-for="todo in todos"
         :key="todo.id"
@@ -17,19 +17,17 @@
 
 <script>
   import TodoListItem from './TodoListItem.vue'
-  import TodoInput from './TodoInput.vue'
+  import AddTaskForm from './AddTaskForm.vue'
 
   let nextTodoId = 1;
 
   export default {
     components: {
       TodoListItem,
-      TodoInput,
+      AddTaskForm,
     },
     data () {
       return {
-        newTodoText: '',
-        newTodoDescr: '',
         todos: [
           {
             id: nextTodoId++,
@@ -50,17 +48,12 @@
       }
     },
     methods: {
-      addTodo () {
-        const trimmedText = this.newTodoText.trim();
-        if (trimmedText) {
-          this.todos.push({
-            id: nextTodoId++,
-            text: trimmedText,
-            descr: newTodoDescr,
-          });
-          this.newTodoText = '';
-          this.newTodoDescr = '';
-        }
+      addTodo (inputData) {
+        this.todos.push({
+          id: nextTodoId++,
+          text: inputData.text,
+          descr: inputData.descr,
+        });
       },
       removeTodo (idToRemove) {
         this.todos = this.todos.filter(todo => {
@@ -70,3 +63,9 @@
     }
   }
 </script>
+
+<style scoped>
+  .todo-list {
+    padding: 0;
+  }
+</style>
