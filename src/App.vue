@@ -27,10 +27,11 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #fff;
-  margin: 40px auto 0 auto;
+  margin: 100px auto 0 auto;
   width: 600px;
   padding: 20px;
   border-radius: 5px;
-  background: linear-gradient(145deg, #545567 0%,#2a2a36 100%);;
+  background: linear-gradient(145deg, #545567 0%,#2a2a36 100%);
+  transition: height 0.5s ease-in-out;
 }
 </style>

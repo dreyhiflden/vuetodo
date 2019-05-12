@@ -2,14 +2,17 @@
   <div>
     <AddTaskForm @addItem="addTodo" />
     <ul v-if="todos.length" class="todo-list">
-      <TodoListItem
-        v-for="todo in todos"
-        :key="todo.id"
-        :todo="todo"
-        @remove="removeTodo"
-      />
+      <transition-group name="list" tag="div" id="todolist">
+        <TodoListItem
+          v-for="todo in todos"
+          :key="todo.id"
+          :todo="todo"
+          class="list-item"
+          @remove="removeTodo"
+        />
+      </transition-group>
     </ul>
-    <p v-else>
+    <p v-else class="empty-list">
       Nothing left in the list. Add a new todo in the input above.
     </p>
   </div>
@@ -32,17 +35,17 @@
           {
             id: nextTodoId++,
             text: 'Learn Vue',
-            descr: 'First item description'
+            description: 'First item description'
           },
           {
             id: nextTodoId++,
             text: 'Learn about single-file components',
-            descr: 'Second item description'
+            description: 'Second item description'
           },
           {
             id: nextTodoId++,
             text: 'Fall in love',
-            descr: 'Third item description'
+            description: 'Third item description'
           }
         ]
       }
@@ -52,7 +55,7 @@
         this.todos.push({
           id: nextTodoId++,
           text: inputData.text,
-          descr: inputData.descr,
+          description: inputData.description,
         });
       },
       removeTodo (idToRemove) {
@@ -67,5 +70,17 @@
 <style scoped>
   .todo-list {
     padding: 0;
+  }
+
+  .empty-list {
+    text-align: center;
+  }
+
+  .list-enter-active, .list-leave-active {
+    transition: all 0.3s;
+  }
+  .list-enter, .list-leave-to /* .list-leave-active до версии 2.1.8 */ {
+    opacity: 0;
+    transform: translateY(30px);
   }
 </style>

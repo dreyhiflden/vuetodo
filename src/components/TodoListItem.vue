@@ -1,27 +1,30 @@
 <template>
-  <li class="todo-list__item" @mouseover="isHovered = true" @mouseleave="isHovered = true">
-    <div class="item-content">
-      <p v-if="!isEditing" class="todo-text">{{ todo.text }}</p>
+  <li class="todo-list__item" @mouseover="isHovered = true" @mouseleave="isHovered = false">
+    <div class="todo-list__container">
+      <p v-if="!isEditing" class="todo-list__title">{{ todo.text }}</p>
       <input class="editing-input editing-input--title"
              v-if="isEditing"
              maxlength="30"
              v-model="todo.text"
              type="text">
-      <p v-if="!isEditing" class="todo-descr">{{ todo.descr }}</p>
-      <input class="editing-input editing-input--subtitle"
+      <p v-if="!isEditing" class="todo-list__description">{{ todo.description }}</p>
+      <input class="editing-input editing-input--description"
              v-if="isEditing"
              maxlength="60"
-             v-model="todo.descr"
+             v-model="todo.description"
              type="text">
     </div>
     <div v-show="isHovered" class="hover-details">
       <div class="hover-details__item">
-        <button class="btn btn--red" @click="$emit('remove', todo.id)">Delete</button>
+        <button class="hover-details__button hover-details__button--red" @click="$emit('remove', todo.id)">Delete</button>
       </div>
       <div class="hover-details__item">
-          <button class="btn btn--green" @click="isEditing = !isEditing">
-            {{ isEditing ? 'Save' : 'Edit' }}
-          </button>
+        <button class="hover-details__button hover-details__button--green" @click="blur" v-if="!isEditing">
+          Edit
+        </button>
+        <button class="hover-details__button hover-details__button--green" @click="unblur" v-if="isEditing">
+          Save
+        </button>
       </div>
     </div>
   </li>
@@ -41,10 +44,36 @@
         isEditing: false,
       }
     },
+    methods: {
+      blur(e) {
+        let currentTodoItem = e.currentTarget.parentNode.parentNode.parentNode;
+        let todoItemsCollection = document.querySelectorAll('.todo-list__item');
+        let todoItemsArray = Array.prototype.slice.call(todoItemsCollection);
+        let currentTodoItemIndex = todoItemsArray.indexOf(currentTodoItem);
+        for (let i = 0; i < todoItemsCollection.length; i++) {
+          if (i !== currentTodoItemIndex) {
+            todoItemsCollection[i].style.filter = "blur(4px)"
+          }
+        }
+        this.isEditing = true;
+      },
+      unblur(e) {
+        let currentTodoItem = e.currentTarget.parentNode.parentNode.parentNode;
+        let todoItemsCollection = document.querySelectorAll('.todo-list__item');
+        let todoItemsArray = Array.prototype.slice.call(todoItemsCollection);
+        let currentTodoItemIndex = todoItemsArray.indexOf(currentTodoItem);
+        for (let i = 0; i < todoItemsCollection.length; i++) {
+          if (i !== currentTodoItemIndex) {
+            todoItemsCollection[i].style.filter = "none"
+          }
+        }
+        this.isEditing = false;
+      }
+    },
   }
 </script>
 
-<style>
+<style scoped>
   .todo-list__item {
     list-style: none;
     padding: 10px 0 10px 20px;
@@ -54,20 +83,21 @@
     display: flex;
     justify-content: space-between;
     height: 60px;
+    transition: all ease 0.1s;
   }
 
   .todo-list__item:hover {
     background: linear-gradient(135deg, #ffffff14 0%, #ffffff03 23%, #ffffff08 100%);
   }
 
-  .todo-text {
+  .todo-list__title {
     margin: 0;
     font-size: 21px;
     font-weight: bold;
     line-height: 1.33;
   }
 
-  .todo-descr {
+  .todo-list__description {
     margin: 0;
     font-size: 14px;
     color: rgba(255, 255, 255, 0.41);
@@ -97,12 +127,11 @@
     justify-content: center;
     align-items: center;
     align-content: center;
-    height: 200px;
-    padding: 7px 0 8px 0;
+    padding: 1px 0 0 0;
   }
 
   .hover-details__item:first-child {
-    margin: 0 0 0 0;
+    margin: 0;
     border-top-right-radius: 5px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.02);
   }
@@ -111,34 +140,41 @@
     background: rgba(255, 255, 255, 0.02);
   }
 
-  .btn {
+  .hover-details__button {
     background: none;
     padding: 5px;
     margin: 0;
     border: none;
     color: #fff;
     font-weight: bold;
+    height: 38px;
+    width: 118px;
+    outline: none;
   }
 
-  .btn--green {
+  .hover-details__button:active {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .hover-details__button--green {
     color: #9DC876;
   }
 
-  .btn--red {
+  .hover-details__button--red {
     color: #DF5C5E;
   }
 
-  .item-content {
+  .todo-list__container {
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
 
   .editing-input {
-    padding: 2px;
     border: 0;
     width: 455px;
-    background: rgba(0, 0, 0, 0.05);
+    background: transparent;
+    outline: none;
   }
 
   .editing-input--title {
@@ -148,16 +184,9 @@
     font-style: italic;
   }
 
-  .editing-input--subtitle {
-    color: rgba(255, 255, 255, 0.41);
+  .editing-input--description {
     font-size: 14px;
     font-style: italic;
-  }
-
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
-  }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    opacity: 0;
+    color: rgba(255, 255, 255, 0.41);
   }
 </style>
