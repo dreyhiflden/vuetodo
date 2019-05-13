@@ -1,5 +1,7 @@
 <template>
-  <li class="todo-list__item" @mouseover="isHovered = true" @mouseleave="isHovered = false">
+  <li class="todo-list__item" :class="{ blurred: !isEditing && ispressed}" @mouseover="isHovered = true"
+      @mouseleave="isHovered =
+  false">
     <div class="todo-list__container">
       <p v-if="!isEditing" class="todo-list__title">{{ todo.text }}</p>
       <input class="editing-input editing-input--title"
@@ -38,6 +40,9 @@
         type: Object,
         required: true
       },
+      ispressed: {
+        type: Boolean,
+      }
     },
     data: function() {
       return {
@@ -50,23 +55,12 @@
         this.$emit('remove', todoid);
         this.unblur();
       },
-      blur(e) {
-        let currentTodoItem = e.currentTarget.parentNode.parentNode.parentNode;
-        let todoItemsCollection = document.querySelectorAll('.todo-list__item');
-        let todoItemsArray = Array.prototype.slice.call(todoItemsCollection);
-        let currentTodoItemIndex = todoItemsArray.indexOf(currentTodoItem);
-        for (let i = 0; i < todoItemsCollection.length; i++) {
-          if (i !== currentTodoItemIndex) {
-            todoItemsCollection[i].style.filter = "blur(4px)"
-          }
-        }
+      blur() {
+        this.$emit('changepressed');
         this.isEditing = true;
       },
       unblur() {
-        let todoItemsCollection = document.querySelectorAll('.todo-list__item');
-        for (let i = 0; i < todoItemsCollection.length; i++) {
-          todoItemsCollection[i].style.filter = "none"
-        }
+        this.$emit('changepressed');
         this.isEditing = false;
       }
     },
@@ -188,5 +182,9 @@
     font-size: 14px;
     font-style: italic;
     color: rgba(255, 255, 255, 0.41);
+  }
+
+  .blurred {
+    filter: blur(4px);
   }
 </style>

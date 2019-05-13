@@ -7,7 +7,9 @@
           v-for="todo in todos"
           :key="todo.id"
           :todo="todo"
+          :ispressed="ispressed"
           class="list-item"
+          @changepressed="changePressed"
           @remove="removeTodo"
         />
       </transition-group>
@@ -47,7 +49,8 @@
             text: 'Fall in love',
             description: 'Third item description'
           }
-        ]
+        ],
+        ispressed: false,
       }
     },
     methods: {
@@ -62,6 +65,9 @@
         this.todos = this.todos.filter(todo => {
           return todo.id !== idToRemove
         });
+      },
+      changePressed() {
+        this.ispressed = !this.ispressed;
       }
     }
   }
