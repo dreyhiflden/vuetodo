@@ -26,16 +26,14 @@
       return {
         newTodoTitle: null,
         newTodoDescription: null,
-      }
+      };
     },
     methods: {
-      addItem () {
-        let inputData = {
+      addItem() {
+        this.$emit('addItem', {
           text: this.newTodoTitle,
           description: this.newTodoDescription,
-        };
-
-        this.$emit('addItem', inputData);
+        });
         this.newTodoTitle = '';
         this.newTodoDescription = '';
       },

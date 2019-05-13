@@ -29,7 +29,7 @@
       TodoListItem,
       AddTaskForm,
     },
-    data () {
+    data() {
       return {
         todos: [
           {
@@ -51,17 +51,17 @@
       }
     },
     methods: {
-      addTodo (inputData) {
+      addTodo(inputData) {
         this.todos.push({
           id: nextTodoId++,
           text: inputData.text,
           description: inputData.description,
         });
       },
-      removeTodo (idToRemove) {
+      removeTodo(idToRemove) {
         this.todos = this.todos.filter(todo => {
           return todo.id !== idToRemove
-        })
+        });
       }
     }
   }
@@ -79,7 +79,7 @@
   .list-enter-active, .list-leave-active {
     transition: all 0.3s;
   }
-  .list-enter, .list-leave-to /* .list-leave-active до версии 2.1.8 */ {
+  .list-enter, .list-leave-to {
     opacity: 0;
     transform: translateY(30px);
   }

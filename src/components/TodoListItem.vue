@@ -16,7 +16,8 @@
     </div>
     <div v-show="isHovered" class="hover-details">
       <div class="hover-details__item">
-        <button class="hover-details__button hover-details__button--red" @click="$emit('remove', todo.id)">Delete</button>
+        <button class="hover-details__button hover-details__button--red" @click="deleteItem(todo.id)">Delete
+        </button>
       </div>
       <div class="hover-details__item">
         <button class="hover-details__button hover-details__button--green" @click="blur" v-if="!isEditing">
@@ -45,6 +46,10 @@
       }
     },
     methods: {
+      deleteItem(todoid) {
+        this.$emit('remove', todoid);
+        this.unblur();
+      },
       blur(e) {
         let currentTodoItem = e.currentTarget.parentNode.parentNode.parentNode;
         let todoItemsCollection = document.querySelectorAll('.todo-list__item');
@@ -57,15 +62,10 @@
         }
         this.isEditing = true;
       },
-      unblur(e) {
-        let currentTodoItem = e.currentTarget.parentNode.parentNode.parentNode;
+      unblur() {
         let todoItemsCollection = document.querySelectorAll('.todo-list__item');
-        let todoItemsArray = Array.prototype.slice.call(todoItemsCollection);
-        let currentTodoItemIndex = todoItemsArray.indexOf(currentTodoItem);
         for (let i = 0; i < todoItemsCollection.length; i++) {
-          if (i !== currentTodoItemIndex) {
-            todoItemsCollection[i].style.filter = "none"
-          }
+          todoItemsCollection[i].style.filter = "none"
         }
         this.isEditing = false;
       }
