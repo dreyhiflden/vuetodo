@@ -7,7 +7,9 @@
           v-for="todo in todos"
           :key="todo.id"
           :todo="todo"
+          :ispressed="ispressed"
           class="list-item"
+          @changepressed="changePressed"
           @remove="removeTodo"
         />
       </transition-group>
@@ -29,7 +31,7 @@
       TodoListItem,
       AddTaskForm,
     },
-    data () {
+    data() {
       return {
         todos: [
           {
@@ -47,21 +49,25 @@
             text: 'Fall in love',
             description: 'Third item description'
           }
-        ]
+        ],
+        ispressed: false,
       }
     },
     methods: {
-      addTodo (inputData) {
+      addTodo(inputData) {
         this.todos.push({
           id: nextTodoId++,
           text: inputData.text,
           description: inputData.description,
         });
       },
-      removeTodo (idToRemove) {
+      removeTodo(idToRemove) {
         this.todos = this.todos.filter(todo => {
           return todo.id !== idToRemove
-        })
+        });
+      },
+      changePressed() {
+        this.ispressed = !this.ispressed;
       }
     }
   }
@@ -79,7 +85,7 @@
   .list-enter-active, .list-leave-active {
     transition: all 0.3s;
   }
-  .list-enter, .list-leave-to /* .list-leave-active до версии 2.1.8 */ {
+  .list-enter, .list-leave-to {
     opacity: 0;
     transform: translateY(30px);
   }
