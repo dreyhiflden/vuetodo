@@ -1,7 +1,8 @@
 <template>
-  <li class="todo-list__item" :class="{ blurred: !isEditing && ispressed}" @mouseover="isHovered = true"
-      @mouseleave="isHovered =
-  false">
+  <li class="todo-list__item"
+      :class="{ blurred: !isEditing && isEditMode}"
+      @mouseover="isHovered = true"
+      @mouseleave="isHovered = false">
     <div class="todo-list__container">
       <p v-if="!isEditing" class="todo-list__title">{{ todo.text }}</p>
       <input class="editing-input editing-input--title"
@@ -40,7 +41,7 @@
         type: Object,
         required: true
       },
-      ispressed: {
+      isEditMode: {
         type: Boolean,
       }
     },
@@ -51,16 +52,16 @@
       }
     },
     methods: {
-      deleteItem(todoid) {
-        this.$emit('remove', todoid);
+      deleteItem(todoId) {
+        this.$emit('remove', todoId);
         this.unblur();
       },
       blur() {
-        this.$emit('changepressed');
+        this.$emit('toggleEditMode');
         this.isEditing = true;
       },
       unblur() {
-        this.$emit('changepressed');
+        this.$emit('toggleEditMode');
         this.isEditing = false;
       }
     },
@@ -151,11 +152,11 @@
   }
 
   .hover-details__button--green {
-    color: #9DC876;
+    color: #9dc876;
   }
 
   .hover-details__button--red {
-    color: #DF5C5E;
+    color: #df5c5e;
   }
 
   .todo-list__container {
