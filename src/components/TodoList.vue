@@ -7,9 +7,9 @@
           v-for="todo in todos"
           :key="todo.id"
           :todo="todo"
-          :ispressed="ispressed"
+          :is-edit-mode="isEditMode"
           class="list-item"
-          @changepressed="changePressed"
+          @toggleEditMode="toggleEditMode"
           @remove="removeTodo"
         />
       </transition-group>
@@ -50,7 +50,7 @@
             description: 'Third item description'
           }
         ],
-        ispressed: false,
+        isEditMode: false,
       }
     },
     methods: {
@@ -66,8 +66,8 @@
           return todo.id !== idToRemove
         });
       },
-      changePressed() {
-        this.ispressed = !this.ispressed;
+      toggleEditMode() {
+        this.isEditMode = !this.isEditMode;
       }
     }
   }
