@@ -66,8 +66,8 @@
           return todo.id !== idToRemove
         });
       },
-      toggleEditMode() {
-        this.isEditMode = !this.isEditMode;
+      toggleEditMode(state) {
+        state === 'on' ? this.isEditMode = true : this.isEditMode = false;
       }
     }
   }
