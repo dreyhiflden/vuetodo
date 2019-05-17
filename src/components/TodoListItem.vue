@@ -57,11 +57,11 @@
         this.unblur();
       },
       blur() {
-        this.$emit('toggleEditMode');
+        this.$emit('toggleEditMode', 'on');
         this.isEditing = true;
       },
       unblur() {
-        this.$emit('toggleEditMode');
+        this.$emit('toggleEditMode', 'off');
         this.isEditing = false;
       }
     },
